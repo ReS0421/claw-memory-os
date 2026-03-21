@@ -1,6 +1,18 @@
+<div align="center">
+
 # 🧠 claw-memory-os
 
 **A persistent memory system for AI agents built on [OpenClaw](https://github.com/openclaw/openclaw).**
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![GitHub stars](https://img.shields.io/github/stars/ReS0421/claw-memory-os)](https://github.com/ReS0421/claw-memory-os/stargazers)
+[![GitHub last commit](https://img.shields.io/github/last-commit/ReS0421/claw-memory-os)](https://github.com/ReS0421/claw-memory-os/commits/main)
+[![GitHub issues](https://img.shields.io/github/issues/ReS0421/claw-memory-os)](https://github.com/ReS0421/claw-memory-os/issues)
+
+</div>
+
+---
+
 
 AI agents forget everything between sessions. This project gives them structured, file-based memory that survives restarts — without databases, embeddings, or vector stores. Just markdown files with clear rules.
 
