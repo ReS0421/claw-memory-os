@@ -1,24 +1,24 @@
 #!/usr/bin/env bash
-# git-autocommit.sh — workspace 변경사항 자동 커밋 + push
+# git-autocommit.sh — auto-commit and push workspace changes
+# Usage: bash scripts/git-autocommit.sh "change summary"
 
 set -euo pipefail
 WORKSPACE="${WORKSPACE:-$HOME/.openclaw/workspace}"
-MSG="${1:-auto: workspace update $(date '+%Y-%m-%d %H:%M')}"
+MSG="${1:-auto: workspace update $(date +%Y-%m-%d)}"
 
 cd "$WORKSPACE"
 
-# 1. gitignore 대상이 cached에 남아있으면 제거
-git rm -r --cached memory/ .openclaw/ .trash/ IDENTITY.md intel_pipeline/ 2>/dev/null || true
+# 1. Remove gitignored files from index if cached
+git rm -r --cached --quiet . 2>/dev/null || true
 
-# 2. add (gitignore 적용됨 — 위에서 untrack했으므로 re-add 안 됨)
-git add .
+# 2. Add all (respects .gitignore — untracked files won't re-add)
+git add -A
 
-# 3. 변경사항 없으면 종료
+# 3. Exit if no changes
 if git diff --cached --quiet; then
-  echo "[git] nothing to commit"
+  echo "No changes to commit"
   exit 0
 fi
 
 git commit -m "$MSG"
-git push
-echo "[git] ✅ pushed: $MSG"
+git push origin main 2>&1 && echo "Push ✅" || echo "Push failed (remote may be ahead)"

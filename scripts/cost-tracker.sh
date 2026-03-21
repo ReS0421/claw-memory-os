@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# cost-tracker.sh — 세션 jsonl에서 토큰 사용량/비용 집계
-# 사용: bash cost-tracker.sh [today|week|all|YYYY-MM-DD]
+# cost-tracker.sh — aggregate token usage/cost from session jsonl files
+# Usage: bash cost-tracker.sh [today|week|all|YYYY-MM-DD]
 
 set -euo pipefail
-SESSIONS_DIR="$HOME/.openclaw/agents/research/sessions"
+SESSIONS_DIR="${SESSIONS_DIR:-$HOME/.openclaw/agents/research/sessions}"
 PERIOD="${1:-today}"
 
 python3 << PYEOF
@@ -16,18 +16,17 @@ period = "$PERIOD"
 now = datetime.now()
 if period == "today":
     start = now.replace(hour=0, minute=0, second=0, microsecond=0)
-    label = f"오늘 ({now.strftime('%Y-%m-%d')})"
+    label = f"Today ({now.strftime('%Y-%m-%d')})"
 elif period == "week":
     start = (now - timedelta(days=7)).replace(hour=0, minute=0, second=0, microsecond=0)
-    label = f"최근 7일 ({start.strftime('%Y-%m-%d')} ~ {now.strftime('%Y-%m-%d')})"
+    label = f"Last 7 days ({start.strftime('%Y-%m-%d')} ~ {now.strftime('%Y-%m-%d')})"
 elif period == "all":
     start = datetime(2020, 1, 1)
-    label = "전체"
+    label = "All time"
 else:
     start = datetime.strptime(period, "%Y-%m-%d")
     label = period
 
-# 모든 jsonl 파일 스캔 (활성 + 리셋 + 삭제 포함)
 files = glob.glob(os.path.join(sessions_dir, "*.jsonl*"))
 files = [f for f in files if not f.endswith('.lock')]
 
@@ -48,11 +47,10 @@ for fpath in files:
                     msg = d.get('message', {})
                     usage = msg.get('usage', {})
                     cost_data = usage.get('cost', {})
-                    
+
                     if not cost_data:
                         continue
-                    
-                    # 시간 필터
+
                     ts = d.get('timestamp', d.get('ts', ''))
                     if ts:
                         try:
@@ -62,10 +60,10 @@ for fpath in files:
                             dt = now
                     else:
                         dt = now
-                    
+
                     if dt < start:
                         continue
-                    
+
                     cost = cost_data.get('total', 0)
                     total_cost += cost
                     total_input += usage.get('input', 0)
@@ -73,13 +71,13 @@ for fpath in files:
                     total_cache_read += usage.get('cacheRead', 0)
                     total_cache_write += usage.get('cacheWrite', 0)
                     total_requests += 1
-                    
+
                     model = msg.get('model', d.get('model', 'unknown'))
                     if model not in model_costs:
                         model_costs[model] = {'cost': 0, 'requests': 0}
                     model_costs[model]['cost'] += cost
                     model_costs[model]['requests'] += 1
-                    
+
                 except (json.JSONDecodeError, KeyError):
                     continue
     except:
@@ -87,19 +85,19 @@ for fpath in files:
 
 print(f"📊 Cost Report — {label}")
 print(f"{'='*50}")
-print(f"총 비용:        \${total_cost:.4f}")
-print(f"총 요청:        {total_requests}회")
-print(f"입력 토큰:      {total_input:,}")
-print(f"출력 토큰:      {total_output:,}")
-print(f"캐시 읽기:      {total_cache_read:,}")
-print(f"캐시 쓰기:      {total_cache_write:,}")
+print(f"Total cost:     \${total_cost:.4f}")
+print(f"Total requests: {total_requests}")
+print(f"Input tokens:   {total_input:,}")
+print(f"Output tokens:  {total_output:,}")
+print(f"Cache read:     {total_cache_read:,}")
+print(f"Cache write:    {total_cache_write:,}")
 print()
-print("모델별:")
+print("By model:")
 for model, data in sorted(model_costs.items(), key=lambda x: -x[1]['cost']):
-    print(f"  {model}: \${data['cost']:.4f} ({data['requests']}회)")
+    print(f"  {model}: \${data['cost']:.4f} ({data['requests']} requests)")
 
 if total_cost > 0:
     cache_ratio = total_cache_read / max(total_input + total_cache_read + total_cache_write, 1) * 100
-    print(f"\n캐시 적중률:    {cache_ratio:.1f}%")
-    print(f"요청당 평균:    \${total_cost/total_requests:.4f}")
+    print(f"\nCache hit rate: {cache_ratio:.1f}%")
+    print(f"Avg per request: \${total_cost/total_requests:.4f}")
 PYEOF

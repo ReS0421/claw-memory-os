@@ -1,57 +1,54 @@
 ---
 title: Design Review Checklist
-created: 2026-03-21
-updated: 2026-03-21
 ---
 
-# 운영 체계 설계 검증 체크리스트
+# System Design Review Checklist
 
-> 운영 구조를 새로 만들거나 대폭 변경한 뒤 돌리는 검증 목록.
-> 첫 적용: 2026-03-21 메모리 시스템 재설계 (Sessions/2026-03-21-memory-redesign.md)
+> Verification checklist for when you create or significantly change an operational structure.
 
-## 체크리스트
+## Checklist
 
-### 1. 정본 일관성
-- [ ] 같은 정보가 2곳 이상에 존재하지 않는가?
-- [ ] 존재한다면 정본 1곳 + 나머지는 포인터인가?
+### 1. Source of Truth Consistency
+- [ ] Does the same information exist in 2+ places?
+- [ ] If so, is there 1 source + pointers everywhere else?
 
-### 2. 반영 누락 감지
-- [ ] 한 곳을 업데이트하고 다른 곳을 빼먹었을 때 감지할 수 있는가?
-- [ ] 감지 메커니즘은 자동인가, 수동인가?
+### 2. Missing Update Detection
+- [ ] If one place is updated and another is missed, can it be detected?
+- [ ] Is the detection mechanism automatic or manual?
 
-### 3. 세션 읽기 부담
-- [ ] 새 세션이 시작될 때 읽어야 할 파일이 몇 개인가?
-- [ ] 전체 구조를 파악하는 데 몇 줄을 읽어야 하는가?
+### 3. Session Read Burden
+- [ ] How many files must be read at session start?
+- [ ] How many lines to grasp the full structure?
 
-### 4. 폴더 역할 경계
-- [ ] 각 폴더의 역할이 겹치지 않는가?
-- [ ] "이 파일은 어디에 넣어야 하지?" 판단이 모호한 경우가 없는가?
+### 4. Folder Role Boundaries
+- [ ] Do folder roles overlap?
+- [ ] Are there cases where "which folder does this go in?" is ambiguous?
 
-### 5. 상태축 vs 시간축 분리
-- [ ] 현재 상태는 정본 문서에서 바로 보이는가?
-- [ ] Daily가 상태 요약 문서로 변질되지 않았는가?
-- [ ] Channels/Tickets가 과거 이력으로 비대해지지 않았는가?
+### 5. State vs. Time Axis Separation
+- [ ] Is current state visible directly from source-of-truth docs?
+- [ ] Have Daily files devolved into state summaries?
+- [ ] Have Channels/Tickets become bloated with past history?
 
-### 6. 장기기억 품질
-- [ ] MEMORY.md에 장기적으로 유효한 것만 있는가?
-- [ ] 임시 상태, 단기 작업, 미검증 아이디어가 섞이지 않았는가?
-- [ ] 반복적으로 유효한 규칙이 누락되지 않았는가?
+### 6. Long-term Memory Quality
+- [ ] Does MEMORY.md contain only long-term valid items?
+- [ ] Are temporary states, short-term tasks, or unverified ideas mixed in?
+- [ ] Are repeatedly valid rules missing?
 
-### 7. 문서 신선도
-- [ ] 현역 문서가 stale 상태로 방치되지 않았는가?
-- [ ] 더 이상 유효하지 않은 문서가 현역 폴더에 남아있지 않는가?
+### 7. Document Freshness
+- [ ] Are active documents left stale?
+- [ ] Are no-longer-valid documents still in active folders?
 
-### 8. 예외 처리 / 복구
-- [ ] 업데이트를 놓쳤을 때 감지할 수 있는가?
-- [ ] 정본과 Daily가 어긋날 때 복구 경로가 있는가?
-- [ ] Archive 이동 후에도 맥락 추적이 가능한가?
+### 8. Exception Handling / Recovery
+- [ ] Can missed updates be detected?
+- [ ] Is there a recovery path when source-of-truth and Daily diverge?
+- [ ] Can context still be traced after Archive moves?
 
-### 9. 운영 마찰 / 유지비용
-- [ ] 세션 중 수동 업데이트 횟수가 과도하지 않은가?
-- [ ] cron 없이 수동으로는 유지 안 되는 병목이 있는가?
-- [ ] 있다면 cron이 커버하고 있는가?
+### 9. Operational Friction / Maintenance Cost
+- [ ] Are manual updates during sessions excessive?
+- [ ] Are there bottlenecks that can't be maintained without cron?
+- [ ] If so, does cron cover them?
 
-### 10. 발견 가능성
-- [ ] "지금 상태가 뭐지?"를 빠르게 찾을 수 있는가?
-- [ ] "왜 이렇게 됐지?"를 1~2단계 안에 추적할 수 있는가?
-- [ ] "이 규칙은 어디 있지?"가 항상 비슷한 위치에서 해결되는가?
+### 10. Discoverability
+- [ ] Can "what's the current state?" be found quickly?
+- [ ] Can "why did this happen?" be traced within 1-2 steps?
+- [ ] Does "where is this rule?" resolve from a consistent location?
