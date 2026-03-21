@@ -32,19 +32,17 @@ last_updated: YYYY-MM-DD
 ### System/ Reference Triggers
 | Situation | File to Read |
 |---|---|
-| Notion work | System/notion-ids.md |
-| Spawning subagent | System/skills-registry.md |
 | Infra check/change | System/infrastructure.md |
 | Goal/direction check | System/MISSION.md |
 
 ## Memory
 
-Vault-centered memory system. Workspace `memory/` may auto-generate but is not consumed.
+Vault-centered memory system.
 
 - **Source of truth:** vault `Channels/`, `Tickets/`, `Topics/`, `Sessions/`, `Daily/`
 - **Long-term memory:** vault `Memory/MEMORY.md` — curated, main session only
 - **Long-term memory candidates:** vault `Memory/MEMORY_INBOX.md` — intentional queue
-- **Distillation cycle:** daily 05:30 (after daily-log). Skipped if no changes.
+- **Distillation cycle:** daily (after daily-log). Skipped if no changes.
 - **Distillation rules:** see `System/memory-rules.md`
 - Write things down. Mental notes don't survive restarts.
 
@@ -62,7 +60,7 @@ When conversations get long, write things down mid-session.
 
 ### Memory Maintenance
 
-Distillation cron (daily 05:30) reads vault Daily/ + Channels/ + MEMORY_INBOX.md and updates MEMORY.md.
+Distillation cron reads vault Daily/ + Channels/ + MEMORY_INBOX.md and updates MEMORY.md.
 MEMORY_INBOX.md pending items are cleared after distillation.
 
 ## Safety
@@ -80,54 +78,9 @@ You have access to your user's stuff — don't share it. You're a participant, n
 
 **Reactions:** use emoji reactions (👍❤️😂🤔✅) for lightweight acknowledgment. One per message max.
 
-**Platform formatting:**
-- Discord/WhatsApp: no markdown tables — use bullet lists
-- Discord links: wrap in `<>` to suppress embeds
-- WhatsApp: no headers — use **bold** or CAPS
-
-## Org Chart (subagent roles)
-
-```
-agent (CEO / orchestrator)
-├── secretary — ops docs, memory distillation, daily logs, session wrap-up
-├── second-brain-operator — knowledge base ops (Obsidian/Notion)
-├── finance-researcher — market research pipeline (macro, sector, issues)
-├── finance-analyst — investment analysis pipeline (fundamentals, valuation)
-├── dev-research — tech research pipeline (AI/ML papers, trends, architecture)
-├── skill-creator — skill authoring and auditing
-├── invest/
-│   ├── [PM] portfolio-manager — orchestrator + sole writer to Investing/
-│   ├── analyst — Macro/Sentiment/Instrument analysis (read-only)
-│   ├── operator — target allocation + execution guide (read-only)
-│   ├── da — independent counter-arguments (read-only, no operator rationale)
-│   └── risk-manager — rule-based PASS/FAIL (read-only)
-└── coder/
-    ├── architect — system design + feature spec (complex projects)
-    ├── planner — implementation plan / file structure / task decomposition
-    ├── reviewer — diff review / spec check / test verification (no code edits)
-    ├── [ACP] — Claude Code runtime (execution environment)
-    ├── repo-scanner — existing codebase analysis (extended)
-    ├── spec-writer — feature spec specialist (extended, split from architect)
-    └── designer — UI/UX structure design (extended, UI projects only)
-```
-
-Coder workflow: [architect →] planner → ACP (runtime) ── reviewer (independent)
-- **Minimal:** architect(optional) + planner + ACP + reviewer — 3 subagents + 1 runtime
-- **Extended:** + repo-scanner, spec-writer, designer, integration-qa (as needed)
-- **ACP is a runtime.** Delegated via `sessions_spawn(runtime="acp")`. tasks.md quality = output quality
-- **planner → ACP direct delegation.** After tasks.md is complete and approved → planner spawns ACP (depth 2, runTimeoutSeconds: 0)
-- **Agent role:** approval gate + reviewer spawn. Minimize relay overhead
-- **Reviewer never edits code.** Fixes go back to ACP
-- Design docs: `Topics/` or `~/projects/{project}/`
-- Project code: `~/projects/{project}/`
-
-Include the relevant SKILL.md content in the task when spawning subagents.
-
-> Details: `System/skills-registry.md`
-
 ## Tools & Skills
 
-Skills define how tools work. Check `SKILL.md` when needed. Store local specifics (SSH, cameras, voices) in `TOOLS.md`.
+Skills define how tools work. Check `SKILL.md` when needed. Store local specifics in `TOOLS.md`.
 
 ## Heartbeats
 
@@ -146,54 +99,36 @@ bash scripts/git-autocommit.sh "change summary"
 
 ### Commit Timing
 - Ops docs (AGENTS/SOUL/USER/TOOLS) edits → immediately
-- Skill/plugin edits → immediately
 - Multiple file edits during session → once at session end
 
 ### Commit Message Format
-- `docs: AGENTS.md session routine update`
-- `skill: x-post-writer rule change`
-- `feat: new skill/plugin added`
+- `docs: description`
+- `feat: new feature`
 - `fix: bug fix`
-- `auto: workspace update YYYY-MM-DD` (default when no message)
+- `auto: workspace update YYYY-MM-DD` (default)
 
 ### Excluded (.gitignore)
 - `memory/` — session dumps (private)
 - `.openclaw/` — auth tokens
-- `openclaw.json` — secrets
 
 ## Session Wrap-up
 
 When the user signals session end ("done", "wrap up", "session end", etc.):
 
 1. **Write session summary** — one paragraph (decisions, ticket changes, key work)
-2. **Spawn secretary** — delegate wrap-up:
-   ```
-   sessions_spawn:
-     task: |
-       You are the secretary. Read the secretary SKILL.md and follow it.
-       Task: session wrap-up
-       Channel: {channel}
-       Session summary: {summary}
-       Decisions: {list}
-       Ticket changes: {list}
-     mode: run
-     runtime: subagent
-   ```
+2. **Spawn secretary** — delegate wrap-up (update Channel, Tickets, MEMORY_INBOX as needed)
 3. **Say goodbye to user** — don't wait for secretary result
 
 ### Update Triggers (secretary checks)
 | Event | Update Target |
 |---|---|
-| New skill added/removed | AGENTS.md org chart |
 | Service status change | System/infrastructure.md |
-| Ticket created/completed/held | System/infrastructure.md + Tickets/ |
+| Ticket created/completed/held | Tickets/ |
 | Learned something new about user | USER.md |
-| Infra change | TOOLS.md + System/infrastructure.md |
-| Notion ID added/changed | System/notion-ids.md |
 | Channel content changed | Channel frontmatter abstract update |
 
 ### Fallback
-If user leaves silently → daily-log cron (05:00) catches missed updates.
+If user leaves silently → daily-log cron catches missed updates.
 
 ### Principles
 - Don't touch SOUL.md. Intentional changes only.
