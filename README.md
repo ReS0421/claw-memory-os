@@ -161,6 +161,8 @@ cp -r vault-template/ ~/vaults/my-workspace/
 cd ~/vaults/my-workspace && git init && git add -A && git commit -m "init: memory vault"
 ```
 
+> All scripts default to `~/vaults/my-workspace/`. If you use a different path, set `VAULT` before running them or update the defaults in the scripts.
+
 ### 4. First run
 
 Start a session with your agent. `BOOTSTRAP.md` will guide the first conversation:

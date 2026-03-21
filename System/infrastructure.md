@@ -18,7 +18,7 @@ Host Machine
 ## Key Paths
 
 - Workspace: `~/.openclaw/workspace/`
-- Vault: `~/vaults/your-vault/`
+- Vault: `~/vaults/my-workspace/`
 - OpenClaw Config: `~/.openclaw/openclaw.json`
 - Skills: `workspace/skills/`
 

@@ -3,6 +3,8 @@
 # Usage: bash scripts/vault-backup.sh
 set -euo pipefail
 
+VAULT="${VAULT:-$HOME/vaults/my-workspace}"
+
 sync_vault() {
     local path="$1"
     local name="$2"
@@ -32,15 +34,12 @@ sync_vault() {
 
 echo "=== Vault Sync $(date '+%Y-%m-%d %H:%M') ==="
 
-VAULT_1="${OBSIDIAN_VAULT:-$HOME/vaults/obsidian}"
-VAULT_2="${WORKSPACE_VAULT:-$HOME/vaults/workspace}"
-
-if [ ! -d "$VAULT_1" ] && [ ! -d "$VAULT_2" ]; then
-    echo "❌ No vault directories found"
+if [ ! -d "$VAULT" ]; then
+    echo "❌ Vault directory not found: $VAULT"
+    echo "Set VAULT env var or update the default path in this script."
     exit 1
 fi
 
-[ -d "$VAULT_1" ] && sync_vault "$VAULT_1" "Vault-1"
-[ -d "$VAULT_2" ] && sync_vault "$VAULT_2" "Vault-2"
+sync_vault "$VAULT" "vault"
 
 echo "=== Done ==="

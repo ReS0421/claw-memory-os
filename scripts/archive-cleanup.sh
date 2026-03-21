@@ -6,7 +6,7 @@
 
 set -euo pipefail
 
-VAULT="${VAULT:-$HOME/vaults/workspace}"
+VAULT="${VAULT:-$HOME/vaults/my-workspace}"
 TODAY=$(date +%Y-%m-%d)
 YEAR=$(date +%Y)
 MONTH=$(date +%Y-%m)
