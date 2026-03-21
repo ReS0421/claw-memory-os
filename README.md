@@ -13,7 +13,6 @@
 
 ---
 
-
 AI agents forget everything between sessions. This project gives them structured, file-based memory that survives restarts — without databases, embeddings, or vector stores. Just markdown files with clear rules.
 
 ## The Problem
@@ -33,39 +32,42 @@ No vector databases. No embeddings. No RAG pipeline. Just markdown files with st
 ## Architecture
 
 ```
-workspace/
-├── SOUL.md              # Agent identity and personality
-├── USER.md              # About your human (learned over time)
-├── AGENTS.md            # Session rules, memory workflows
-├── HEARTBEAT.md         # Periodic health checks
-├── BOOTSTRAP.md         # Reading guide (where to find what)
-├── TOOLS.md             # Local environment notes
+workspace/                          ← OpenClaw workspace (~/.openclaw/workspace/)
+├── SOUL.md                         # Agent identity and personality
+├── USER.md                         # About your human (learned over time)
+├── AGENTS.md                       # Session rules, memory workflows, vault path
+├── BOOTSTRAP.md                    # First-run setup ritual (delete after use)
+├── IDENTITY.md                     # Agent name, creature, vibe, emoji
+├── HEARTBEAT.md                    # Periodic health check tasks
+├── TOOLS.md                        # Local environment notes
 │
-├── System/              # Operational rules (source of truth)
-│   ├── memory-rules.md          # Distillation rules
+├── System/                         # Operational rules (source of truth)
+│   ├── memory-rules.md             # Distillation rules
 │   ├── channel-archiving-rules.md  # Channel trimming policy
 │   ├── design-review-checklist.md  # System design verification
-│   ├── infrastructure.md       # Infra, paths, services
-│   ├── notion-ids.md           # External service ID reference
-│   └── MISSION.md              # Top-level goals
+│   ├── infrastructure.md           # Infra, paths, services
+│   ├── notion-ids.md               # External service ID reference
+│   └── MISSION.md                  # Top-level goals
 │
 ├── skills/
-│   └── openclaw-secretary/     # Memory management, distillation, logs
+│   └── openclaw-secretary/         # Memory management, distillation, daily logs
 │
-├── scripts/             # Automation utilities
-│   ├── git-autocommit.sh       # Auto-commit workspace changes
-│   ├── vault-backup.sh         # Git-based vault sync
-│   ├── archive-cleanup.sh      # Channel archive trimming
-│   └── cost-tracker.sh         # Token usage tracking
-│
-└── vault-template/      # Starter structure for your memory vault
-    ├── Channels/        # Conversation state (one file per channel)
-    ├── Tickets/         # Task tracking (T-001, T-002, ...)
-    ├── Topics/          # Long-lived knowledge docs
-    ├── Memory/          # MEMORY.md + INBOX + review log
-    ├── Sessions/        # Archived session records
-    └── Daily/           # Daily logs (one per day)
+└── scripts/                        # Automation utilities
+    ├── git-autocommit.sh           # Auto-commit workspace changes
+    ├── vault-backup.sh             # Git-based vault sync
+    ├── archive-cleanup.sh          # Channel archive trimming
+    └── cost-tracker.sh             # Token usage tracking
+
+vault/                              ← Separate git repo (your memory storage)
+├── Channels/                       # Conversation state (one file per channel)
+├── Tickets/                        # Task tracking (T-001, T-002, ...)
+├── Topics/                         # Long-lived knowledge docs
+├── Memory/                         # MEMORY.md + INBOX + review log
+├── Sessions/                       # Archived session records
+└── Daily/                          # Daily logs (one per day)
 ```
+
+> **Workspace vs. Vault:** The workspace holds agent config and rules. The vault holds your actual memory data. They're separate git repos — you can share the workspace (this repo) without exposing your memory.
 
 ## Key Concepts
 
@@ -127,38 +129,57 @@ The distillation cron (see `System/memory-rules.md`) follows strict rules:
 
 ### Session Wrap-up
 
-When a session ends, the secretary:
-1. Updates relevant Channel files
-2. Moves confirmed learnings to MEMORY.md or MEMORY_INBOX.md
-3. Updates Tickets if task states changed
-4. Refreshes Channel `abstract` frontmatter
+When a session ends:
+1. Update relevant Channel files
+2. Move confirmed learnings to MEMORY.md or MEMORY_INBOX.md
+3. Update Tickets if task states changed
+4. Refresh Channel `abstract` frontmatter
 
 ## Getting Started
 
-1. **Install [OpenClaw](https://github.com/openclaw/openclaw)** if you haven't already
+### 1. Install OpenClaw
 
-2. **Copy workspace files:**
-   ```bash
-   cp SOUL.md USER.md AGENTS.md HEARTBEAT.md BOOTSTRAP.md TOOLS.md IDENTITY.md ~/.openclaw/workspace/
-   cp -r System/ skills/ scripts/ ~/.openclaw/workspace/
-   ```
+Follow the [OpenClaw installation guide](https://github.com/openclaw/openclaw).
 
-3. **Set up your vault** (memory storage):
-   ```bash
-   cp -r vault-template/ ~/vaults/my-workspace/
-   cd ~/vaults/my-workspace && git init
-   ```
+### 2. Copy workspace files
 
-4. **Customize:**
-   - `SOUL.md` — give your agent a name and personality
-   - `System/MISSION.md` — define your goals
-   - `System/infrastructure.md` — map your setup
-   - `AGENTS.md` — adjust session rules to your workflow
+```bash
+# Clone this repo
+git clone https://github.com/ReS0421/claw-memory-os.git
+cd claw-memory-os
 
-5. **Set up crons** (recommended):
-   - Daily log generation
-   - Memory distillation (after daily log)
-   - Vault backup (git-based)
+# Copy to your OpenClaw workspace
+cp SOUL.md USER.md AGENTS.md BOOTSTRAP.md IDENTITY.md HEARTBEAT.md TOOLS.md ~/.openclaw/workspace/
+cp -r System/ skills/ scripts/ ~/.openclaw/workspace/
+```
+
+### 3. Set up your vault
+
+```bash
+# Create vault from template
+cp -r vault-template/ ~/vaults/my-workspace/
+cd ~/vaults/my-workspace && git init && git add -A && git commit -m "init: memory vault"
+```
+
+### 4. First run
+
+Start a session with your agent. `BOOTSTRAP.md` will guide the first conversation:
+- Name your agent, set its personality
+- Fill in `USER.md` with your info
+- Set goals in `System/MISSION.md`
+- Update `AGENTS.md` with your vault path
+
+After setup, the agent deletes `BOOTSTRAP.md` — it's a one-time ritual.
+
+### 5. Set up crons (recommended)
+
+```
+daily-log         05:00    # Write daily summary
+memory-distill    05:30    # Distill INBOX → MEMORY.md
+vault-backup      03:00    # Git commit + push vault
+```
+
+See OpenClaw docs for cron configuration.
 
 ## Design Principles
 
@@ -174,13 +195,13 @@ When a session ends, the secretary:
 |---|---|
 | < 1,000 lines | Just works. Read everything at session start. |
 | 1,000–5,000 lines | Channel abstracts for fast scanning. Read details on demand. |
-| > 5,000 lines | Time to evaluate: more aggressive archiving, topic consolidation, or semantic search. |
+| > 5,000 lines | More aggressive archiving, topic consolidation, or semantic search. |
 
-The system includes a heartbeat check that alerts when total memory exceeds 5,000 lines.
+`HEARTBEAT.md` includes an optional memory scale check — uncomment it after setting up your vault.
 
 ## Contributing
 
-This system was built for real daily use over weeks of iteration. If you find improvements, open an issue or PR.
+This system was built for real daily use over weeks of iteration. See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ## License
 
