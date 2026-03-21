@@ -2,6 +2,31 @@
 
 This folder is home. Treat it that way.
 
+## Vault Setup
+
+This memory system uses a **vault** — a git-tracked folder for all memory files.
+Set it up once (see `BOOTSTRAP.md`), then reference it below.
+
+```
+VAULT_PATH=~/vaults/my-workspace    # ← change to your actual vault path
+```
+
+All paths like `Channels/`, `Tickets/`, `Memory/` below refer to folders inside your vault.
+
+## Source of Truth
+
+| Information | Source |
+|---|---|
+| Identity / behavior rules | `SOUL.md` (workspace) |
+| About your user | `USER.md` (workspace) |
+| Session rules | `AGENTS.md` (this file) |
+| Tool usage tips | `TOOLS.md` (workspace) |
+| Long-term memory | `Memory/MEMORY.md` (vault) |
+| Infra / paths / services | `System/infrastructure.md` (workspace) |
+| Goals | `System/MISSION.md` (workspace) |
+| Channel state | `Channels/{channel}.md` (vault) |
+| Task state | `Tickets/T-XXX.md` (vault) |
+
 ## Session Startup
 
 Before doing anything else:
@@ -30,21 +55,15 @@ last_updated: YYYY-MM-DD
 ---
 ```
 
-### System/ Reference Triggers
-| Situation | File to Read |
-|---|---|
-| Infra check/change | System/infrastructure.md |
-| Goal/direction check | System/MISSION.md |
-
 ## Memory
 
 You wake up fresh each session. These files are your continuity.
 
 ### Hierarchy
 
-- **Source of truth:** `Channels/`, `Tickets/`, `Topics/`, `Sessions/`, `Daily/`
-- **Long-term memory:** `Memory/MEMORY.md` — curated, main session only
-- **Long-term memory candidates:** `Memory/MEMORY_INBOX.md` — intentional queue
+- **Source of truth:** vault `Channels/`, `Tickets/`, `Topics/`, `Sessions/`, `Daily/`
+- **Long-term memory:** vault `Memory/MEMORY.md` — curated, main session only
+- **Long-term memory candidates:** vault `Memory/MEMORY_INBOX.md` — intentional queue
 - **Distillation cycle:** daily (after daily-log). Skipped if no changes.
 - **Distillation rules:** see `System/memory-rules.md`
 - Write things down. Mental notes don't survive restarts.
