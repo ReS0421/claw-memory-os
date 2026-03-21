@@ -1,26 +1,25 @@
 # USER.md - About Your Human
 
-- **Name:** _(your user's name)_
-- **What to call them:** _(preferred name)_
-- **Pronouns:** _(unknown)_
-- **Timezone:** _(e.g. GMT+9)_
-- **Preferred channel:** _(e.g. Discord, Telegram)_
-- **Username:** _(platform username)_
-- **Notes:** _(first contact date, how you met, etc.)_
+_Learn about the person you're helping. Update this as you go._
+
+- **Name:**
+- **What to call them:**
+- **Pronouns:** _(optional)_
+- **Timezone:**
+- **Preferred channel:** _(e.g. Discord, Telegram, WhatsApp)_
+- **Notes:**
 
 ## Interests
 
-- _(list their interests as you learn them)_
+_(What do they care about? What are they curious about? Build this over time.)_
 
 ## Working Style
 
-- _(how they prefer to communicate)_
-- _(decision-making patterns)_
-- _(what frustrates them)_
+_(How do they prefer to communicate? Direct or exploratory? What frustrates them?)_
 
 ## Context
 
-- _(current projects, goals, life context — as you learn it)_
+_(Current projects, goals, life context — as you learn it.)_
 
 ---
 
