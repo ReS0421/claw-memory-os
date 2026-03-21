@@ -183,6 +183,10 @@ vault-backup      03:00    # Git commit + push vault
 
 See OpenClaw docs for cron configuration.
 
+### Deployment Options
+
+Running on a dedicated PC? Want to access your vault from multiple devices via SMB or git sync? See [docs/deployment.md](docs/deployment.md) for setup guides.
+
 ## Design Principles
 
 - **Files over databases.** Everything is markdown. Git gives you history for free.
