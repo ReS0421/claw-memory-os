@@ -43,6 +43,7 @@ Certain long-term memories skip the INBOX and go directly to MEMORY.md.
 - New tool/pipeline introduced
 - Project state transition (started, completed, paused)
 - System structure change (memory system, vault structure)
+- Confirmed Learned Pattern or Learned Case
 
 Log as `decision: immediate` in review-log.
 

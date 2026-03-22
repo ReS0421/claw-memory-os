@@ -55,6 +55,7 @@ If any of the following apply, write to MEMORY.md immediately:
 | **New tool/pipeline** | New skill, new automation, new DB/API integration |
 | **Project state transition** | Project started, phase completed, paused, direction changed |
 | **System structure change** | Memory system change, vault restructure, doc reorganization |
+| **Confirmed Pattern/Case** | Learned Pattern or Learned Case confirmed during session |
 
 When applying:
 - If content already exists in MEMORY.md → **replace** (don't add duplicate)
