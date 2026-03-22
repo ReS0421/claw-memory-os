@@ -3,10 +3,11 @@
 # Usage: bash scripts/archive-cleanup.sh
 #
 # Compatibility: Linux (GNU date) and macOS (BSD date)
+# Set VAULT_PATH (or VAULT) to override the default path.
 
 set -euo pipefail
 
-VAULT="${VAULT:-$HOME/vaults/my-workspace}"
+VAULT="${VAULT_PATH:-${VAULT:-$HOME/vaults/my-workspace}}"
 TODAY=$(date +%Y-%m-%d)
 YEAR=$(date +%Y)
 MONTH=$(date +%Y-%m)
@@ -85,6 +86,15 @@ done
 if [ "$CHANGED" -eq 0 ]; then
   echo "Nothing to archive"
 else
-  cd "$VAULT" && git add -A && git commit -m "archive: cleanup $TODAY" && git push
-  echo "Archive complete + git push"
+  cd "$VAULT"
+  if [ -d ".git" ]; then
+    git add -A && git commit -m "archive: cleanup $TODAY"
+    if git remote get-url origin >/dev/null 2>&1; then
+      git push && echo "Archive complete + git push"
+    else
+      echo "Archive complete (committed locally, no remote)"
+    fi
+  else
+    echo "Archive complete (vault is not a git repo)"
+  fi
 fi

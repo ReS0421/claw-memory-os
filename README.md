@@ -54,11 +54,14 @@ workspace/                          ← OpenClaw workspace (~/.openclaw/workspac
 ├── skills/
 │   └── openclaw-secretary/         # Memory management, distillation, daily logs
 │
-└── scripts/                        # Automation utilities
-    ├── git-autocommit.sh           # Auto-commit workspace changes
-    ├── vault-backup.sh             # Git-based vault sync
-    ├── archive-cleanup.sh          # Channel archive trimming
-    └── cost-tracker.sh             # Token usage tracking
+├── scripts/                        # Automation utilities
+│   ├── git-autocommit.sh           # Auto-commit workspace changes
+│   ├── vault-backup.sh             # Git-based vault sync
+│   ├── archive-cleanup.sh          # Move old Tickets/Daily/Sessions into Archive/
+│   └── cost-tracker.sh             # Token usage tracking
+│
+└── docs/
+    └── deployment.md               # Server/cloud deployment guides
 
 vault/                              ← Separate git repo (your memory storage)
 ├── Archive/                        # Archived tickets, daily logs, sessions
@@ -66,7 +69,7 @@ vault/                              ← Separate git repo (your memory storage)
 ├── Daily/                          # Daily logs (one per day)
 ├── Memory/                         # MEMORY.md + INBOX + review log
 ├── Sessions/                       # Archived session records
-├── System/                         # Operational rules (mirrors workspace System/)
+├── System/                         # Optional local copies / pointers to workspace System/
 ├── Tickets/                        # Task tracking (T-001, T-002, ...)
 └── Topics/                         # Long-lived knowledge docs
 ```
@@ -145,17 +148,26 @@ When a session ends:
 
 Follow the [OpenClaw installation guide](https://github.com/openclaw/openclaw).
 
-### 2. Copy workspace files
+### 2. Set up your workspace
+
+**Option A — Clone as workspace (recommended):**
+
+Use this repo directly as your OpenClaw workspace. This lets `git-autocommit.sh` track changes automatically.
 
 ```bash
-# Clone this repo
+git clone https://github.com/ReS0421/claw-memory-os.git ~/.openclaw/workspace
+```
+
+**Option B — Copy files (if you manage workspace separately):**
+
+```bash
 git clone https://github.com/ReS0421/claw-memory-os.git
 cd claw-memory-os
-
-# Copy to your OpenClaw workspace
 cp SOUL.md USER.md AGENTS.md BOOTSTRAP.md IDENTITY.md HEARTBEAT.md TOOLS.md ~/.openclaw/workspace/
-cp -r System/ skills/ scripts/ ~/.openclaw/workspace/
+cp -r System/ skills/ scripts/ docs/ ~/.openclaw/workspace/
 ```
+
+> With Option B, `git-autocommit.sh` will only work if your workspace is independently a git repo. If not, the script skips silently.
 
 ### 3. Set up your vault
 
@@ -163,9 +175,13 @@ cp -r System/ skills/ scripts/ ~/.openclaw/workspace/
 # Create vault from template
 cp -r vault-template/ ~/vaults/my-workspace/
 cd ~/vaults/my-workspace && git init && git add -A && git commit -m "init: memory vault"
+
+# (Optional) Add a remote for backup/sync
+# git remote add origin <your-private-repo-url>
+# git push -u origin main
 ```
 
-> All scripts default to `~/vaults/my-workspace/`. If you use a different path, set `VAULT` before running them or update the defaults in the scripts.
+> All scripts default to `~/vaults/my-workspace/`. To use a different path, set `VAULT_PATH` (or `VAULT`) before running them.
 
 ### 4. First run
 

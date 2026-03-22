@@ -36,12 +36,16 @@ Then open `SOUL.md` together and talk about:
 
 This workspace uses a structured memory system. Initialize it:
 
-1. **Set your vault path** — where memory files live:
+1. **Create your vault** — where memory files live:
    ```bash
    cp -r vault-template/ ~/vaults/my-workspace/
-   cd ~/vaults/my-workspace && git init
+   cd ~/vaults/my-workspace && git init && git add -A && git commit -m "init: memory vault"
+
+   # (Optional) Add a remote for backup/sync:
+   # git remote add origin <your-private-repo-url>
+   # git push -u origin main
    ```
-2. **Update AGENTS.md** — set the vault path in Session Startup
+2. **Update AGENTS.md** — set the vault path in the Vault Setup section
 3. **Set goals** — edit `System/MISSION.md` with your human
 4. **Map infra** — edit `System/infrastructure.md` with your setup
 

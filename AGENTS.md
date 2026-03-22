@@ -129,10 +129,15 @@ Edit `HEARTBEAT.md` to set periodic tasks. Keep it minimal to limit token burn.
 
 ## Git Auto-Commit
 
-After changing workspace files, **always** run:
+If your workspace is a git repo, run this after changing files:
 ```bash
 bash scripts/git-autocommit.sh "change summary"
 ```
+
+The script auto-detects the workspace setup:
+- **Not a git repo** → skips silently (exit 0)
+- **Git repo, no remote** → commits locally
+- **Git repo with remote** → commits and pushes
 
 ### Commit Format
 - `docs: description` / `feat: new feature` / `fix: bug fix`
@@ -150,9 +155,11 @@ When the user signals session end:
 | Event | Update Target |
 |---|---|
 | Ticket created/completed | Tickets/ |
+| Service status changed | System/infrastructure.md |
 | Learned something about user | USER.md |
 | Channel content changed | Channel frontmatter abstract |
 | Key decision made | Memory/MEMORY_INBOX.md |
+| Memory routing rules unclear | See `System/memory-rules.md` |
 
 ### Principles
 - Don't touch SOUL.md without telling the user.
