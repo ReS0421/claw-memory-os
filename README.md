@@ -59,12 +59,14 @@ workspace/                          ← OpenClaw workspace (~/.openclaw/workspac
     └── cost-tracker.sh             # Token usage tracking
 
 vault/                              ← Separate git repo (your memory storage)
+├── Archive/                        # Archived tickets, daily logs, sessions
 ├── Channels/                       # Conversation state (one file per channel)
-├── Tickets/                        # Task tracking (T-001, T-002, ...)
-├── Topics/                         # Long-lived knowledge docs
+├── Daily/                          # Daily logs (one per day)
 ├── Memory/                         # MEMORY.md + INBOX + review log
 ├── Sessions/                       # Archived session records
-└── Daily/                          # Daily logs (one per day)
+├── System/                         # Operational rules (mirrors workspace System/)
+├── Tickets/                        # Task tracking (T-001, T-002, ...)
+└── Topics/                         # Long-lived knowledge docs
 ```
 
 > **Workspace vs. Vault:** The workspace holds agent config and rules. The vault holds your actual memory data. They're separate git repos — you can share the workspace (this repo) without exposing your memory.
