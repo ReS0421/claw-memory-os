@@ -3,7 +3,7 @@
 # Usage: bash cost-tracker.sh [today|week|all|YYYY-MM-DD]
 
 set -euo pipefail
-SESSIONS_DIR="${SESSIONS_DIR:-$HOME/.openclaw/agents/research/sessions}"
+SESSIONS_DIR="${SESSIONS_DIR:-$HOME/.openclaw/agents/*/sessions}"
 PERIOD="${1:-today}"
 
 python3 << PYEOF

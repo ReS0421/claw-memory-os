@@ -10,7 +10,7 @@ updated: YYYY-MM-DD
 ```
 Host Machine
 ├── OpenClaw Gateway  :18789
-├── Agent: research (single)
+├── Agent: _(your agent name)_
 ├── workspace: ~/.openclaw/workspace/
 └── (your services here)
 ```
@@ -18,7 +18,7 @@ Host Machine
 ## Key Paths
 
 - Workspace: `~/.openclaw/workspace/`
-- Vault: `~/vaults/my-workspace/`
+- Vault: `~/vaults/my-workspace/` _(update to match your VAULT_PATH)_
 - OpenClaw Config: `~/.openclaw/openclaw.json`
 - Skills: `workspace/skills/`
 
@@ -26,10 +26,10 @@ Host Machine
 
 | Service | Schedule | Status |
 |---|---|---|
-| daily-log | daily 05:00 | ✅ |
-| memory-distill | daily 05:30 | ✅ |
-| vault-backup | daily 03:00 | ✅ |
-| heartbeat | 6h interval | ✅ |
+| daily-log | daily 05:00 | enabled / disabled |
+| memory-distill | daily 05:30 | enabled / disabled |
+| vault-backup | daily 03:00 | enabled / disabled |
+| heartbeat | _(interval)_ | enabled / disabled |
 
 ## External Integrations
 

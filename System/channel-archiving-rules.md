@@ -16,7 +16,7 @@ title: Channel Archiving Rules
 
 ### Recent Decisions
 - **Keep:** items within the last 2 weeks (max 10)
-- **Archive:** items older than 2 weeks → `Sessions/{date}-{channel}.md`
+- **Archive:** items older than 2 weeks → `Sessions/{date}-{channel}-archive.md`
 - **Exception:** decisions referenced by Open Loops stay even if older than 2 weeks
 
 ### Completed Items

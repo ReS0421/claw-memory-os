@@ -1,12 +1,10 @@
 # System/
 
-System-level configuration and rules. Referenced by AGENTS.md and secretary skill.
+This folder is for **local overrides or quick-reference copies** of workspace System/ files.
 
-| File | Purpose |
-|---|---|
-| MISSION.md | Top-level goals |
-| infrastructure.md | Services, paths, architecture |
-| memory-rules.md | MEMORY.md distillation rules |
-| channel-archiving-rules.md | Channel trimming policy |
-| design-review-checklist.md | Design change verification |
-| notion-ids.md | Notion page/database IDs |
+The **source of truth** for all system rules lives in the workspace:
+`~/.openclaw/workspace/System/`
+
+You can optionally copy or symlink files here for convenience, but the workspace versions are authoritative.
+
+See `AGENTS.md` → "Source of Truth" table for the full mapping.

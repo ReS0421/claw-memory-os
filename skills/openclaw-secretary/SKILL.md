@@ -40,12 +40,8 @@ Spawned by the main agent at session end. Execute in order:
    - Modify the relevant Ticket file
    - Update `Tickets/INDEX.md`
 4. **Trigger table check** — see AGENTS.md "Session Wrap-up" section
-   - Service status change → System/infrastructure.md
-   - Ticket created/completed/held → Tickets/
-   - Learned something new about user → USER.md
-   - Channel content changed → Channel frontmatter abstract
 5. **Git commit + push**
-   - Vault: `cd {vault_path} && git add -A && git commit -m "wrap-up: {channel} {date}" && git push`
+   - Vault: `cd {vault_path} && git add -A && git commit -m "wrap-up: {channel} {date}"` (push if remote configured)
    - Workspace (if changed): `bash scripts/git-autocommit.sh "wrap-up: {summary}"`
 
 #### Immediate Intake Criteria (write directly to MEMORY.md)
