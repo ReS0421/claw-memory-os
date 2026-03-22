@@ -21,6 +21,11 @@
 
 _(High-level system notes go here)_
 
+## Domain Status
+> Per-domain state summaries. Keep latest only — replace on each update.
+
+_(Add domain summaries as your system grows, e.g. "Notion portfolio", "Intel pipeline", etc.)_
+
 ---
 
 ## Learned Patterns
