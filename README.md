@@ -40,6 +40,8 @@ workspace/                          ← OpenClaw workspace (~/.openclaw/workspac
 ├── IDENTITY.md                     # Agent name, creature, vibe, emoji
 ├── HEARTBEAT.md                    # Periodic health check tasks
 ├── TOOLS.md                        # Local environment notes
+├── CONTRIBUTING.md                 # Contribution guidelines
+├── LICENSE                         # MIT License
 │
 ├── System/                         # Operational rules (source of truth)
 │   ├── memory-rules.md             # Distillation rules
