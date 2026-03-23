@@ -2,6 +2,11 @@
 
 This guide covers common ways to run the memory system depending on your setup.
 
+> **Vault repo visibility policy:**
+> - Workspace template repo (this repo) — public is fine
+> - Your runtime workspace repo — **private recommended**
+> - Your vault repo — **private required**. Your vault contains personal memory data (conversations, decisions, notes). Never make it public.
+
 ## 1. Local Machine (Simplest)
 
 Everything runs on your personal computer — OpenClaw, workspace, and vault.
@@ -37,11 +42,9 @@ The vault lives on the server. To read/edit from your personal device:
 
 Both the server and your device clone the same vault repo. Changes sync via git push/pull.
 
-> **⚠️ Vault repo must be private.** Your vault contains personal memory data. Never use a public repository.
-
 ```bash
 # On your personal device
-# Use a PRIVATE repo — vault contains personal memory data
+# ⚠️ Your vault repo MUST be private — it contains personal memory data.
 git clone git@github.com:you/my-vault-private.git ~/vaults/my-workspace
 
 # Periodic sync (or use obsidian-git plugin)
