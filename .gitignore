@@ -5,6 +5,7 @@ Thumbs.db
 # Temp
 *.tmp
 *.log
+*.bak
 
 # Python
 .venv/
@@ -29,5 +30,38 @@ node_modules/
 .openclaw/
 secrets/
 
+# Credentials & keys
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+*.token
+*.session
+*.credentials
+*.credentials.*
+*.secret
+*.secret.*
+
+# Local override files (use *.local.md for env-specific values)
+*.local
+*.local.md
+USER.local.md
+TOOLS.local.md
+System/infrastructure.local.md
+System/notion-ids.local.md
+System/MISSION.local.md
+
+# Databases / state
+*.sqlite
+*.sqlite3
+*.db
+
 # Runtime memory (not for sharing)
 memory/
+Memory/
+
+# Vault data (keep vault in its own private repo)
+vaults/
+vault/
+Archive/

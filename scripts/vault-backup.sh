@@ -25,9 +25,14 @@ sync_vault() {
         has_remote=true
     fi
 
+    # Resolve current branch name (fallback to main if detached)
+    BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null || echo "main")
+
     # 1. Pull remote changes first (only if remote exists)
     if $has_remote; then
-        git pull origin main --rebase --quiet 2>&1 && echo "[$name] pull ✅" || echo "[$name] pull conflict — attempting local commit only"
+        git pull origin "$BRANCH" --rebase --quiet 2>&1 \
+            && echo "[$name] pull ✅" \
+            || echo "[$name] pull conflict — attempting local commit only"
     fi
 
     # 2. Check for changes
@@ -41,7 +46,9 @@ sync_vault() {
     git commit -m "auto: backup $(date +%Y-%m-%d)"
 
     if $has_remote; then
-        git push origin main 2>&1 && echo "[$name] push ✅" || echo "[$name] ⚠️ push failed — committed locally"
+        git push origin "$BRANCH" 2>&1 \
+            && echo "[$name] push ✅" \
+            || echo "[$name] ⚠️ push failed — committed locally"
     else
         echo "[$name] ✅ committed locally (no remote configured)"
     fi

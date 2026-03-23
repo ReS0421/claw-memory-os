@@ -37,9 +37,12 @@ The vault lives on the server. To read/edit from your personal device:
 
 Both the server and your device clone the same vault repo. Changes sync via git push/pull.
 
+> **⚠️ Vault repo must be private.** Your vault contains personal memory data. Never use a public repository.
+
 ```bash
 # On your personal device
-git clone git@github.com:you/my-vault.git ~/vaults/my-workspace
+# Use a PRIVATE repo — vault contains personal memory data
+git clone git@github.com:you/my-vault-private.git ~/vaults/my-workspace
 
 # Periodic sync (or use obsidian-git plugin)
 cd ~/vaults/my-workspace && git pull

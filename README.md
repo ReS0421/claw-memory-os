@@ -177,11 +177,18 @@ cp -r vault-template/ ~/vaults/my-workspace/
 cd ~/vaults/my-workspace && git init && git add -A && git commit -m "init: memory vault"
 
 # (Optional) Add a remote for backup/sync
-# git remote add origin <your-private-repo-url>
+# ⚠️  VAULT REPO MUST BE PRIVATE — it contains your personal memory data.
+# Never use a public repository for your vault.
+# git remote add origin <your-PRIVATE-repo-url>
 # git push -u origin main
 ```
 
 > All scripts default to `~/vaults/my-workspace/`. To use a different path, set `VAULT_PATH` (or `VAULT`) before running them.
+
+> **Repo visibility rules:**
+> - `claw-memory-os` (this workspace template) — public OK
+> - Your runtime workspace repo — private recommended
+> - Your vault repo — **private required** (contains personal memory data)
 
 ### 4. First run
 

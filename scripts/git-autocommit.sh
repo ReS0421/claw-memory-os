@@ -34,7 +34,11 @@ git commit -m "$MSG"
 
 # Push only if a remote is configured
 if git remote get-url origin >/dev/null 2>&1; then
-  git push origin main 2>&1 && echo "[git] ✅ pushed: $MSG" || echo "[git] ⚠️ push failed (remote may be ahead — run git pull)"
+  # Resolve current branch name (fallback to main if detached)
+  BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null || echo "main")
+  git push origin "$BRANCH" 2>&1 \
+    && echo "[git] ✅ pushed: $MSG" \
+    || echo "[git] ⚠️ push failed (remote may be ahead — run git pull)"
 else
   echo "[git] ✅ committed locally: $MSG (no remote configured)"
 fi
