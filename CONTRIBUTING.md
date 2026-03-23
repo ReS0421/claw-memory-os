@@ -38,4 +38,4 @@ See [README.md](README.md) for the full architecture overview. Key files:
 
 ## Questions?
 
-Open an issue or join the [OpenClaw Discord](https://discord.com/invite/clawd).
+Open an issue or reach out on X: [@ReS0403](https://x.com/ReS0403).
