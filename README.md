@@ -9,6 +9,8 @@
 [![GitHub last commit](https://img.shields.io/github/last-commit/ReS0421/claw-memory-os)](https://github.com/ReS0421/claw-memory-os/commits/main)
 [![GitHub issues](https://img.shields.io/github/issues/ReS0421/claw-memory-os)](https://github.com/ReS0421/claw-memory-os/issues)
 
+
+🇰🇷 [한국어](README.ko.md)
 </div>
 
 ---
