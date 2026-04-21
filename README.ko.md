@@ -162,6 +162,27 @@ git commit -m "init: memory vault"
 - vault-backup
 - archive-cleanup
 
+## Vault Template Quick Tour
+
+`vault-template/`를 처음 열면 아래 순서로 보면 된다.
+
+- `Memory/MEMORY.md` → 가벼운 마스터 진입점
+- `Memory/State/` → 도메인별 현재 진실
+- `Memory/Log/` → 월별 append-only 마일스톤
+- `Memory/Patterns/` → 재사용 가능한 패턴과 문제→해결 케이스
+- `Memory/MEMORY_INBOX.md` → 증류 전 intake 큐
+- `Channels/` → 현재 대화 상태
+- `Tickets/` → 활성 실행 상태
+- `Topics/` → 장기 설계/지식 문서
+
+간단한 기준은 이렇다.
+- **현재 진실** → `State/`
+- **히스토리 마일스톤** → `Log/`
+- **재사용 교훈** → `Patterns/`
+- **아직 불확실한 입력** → `MEMORY_INBOX.md`
+
+이 분리가 MEMOS v3의 핵심이다.
+
 ## 규모 대응
 
 | 메모리 규모 | 권장 동작 |

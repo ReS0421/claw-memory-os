@@ -163,6 +163,27 @@ Recommended recurring jobs:
 - vault-backup
 - archive-cleanup
 
+## Vault Template Quick Tour
+
+If you open `vault-template/` for the first time, start here:
+
+- `Memory/MEMORY.md` → the lightweight master entry point
+- `Memory/State/` → current truth by domain
+- `Memory/Log/` → append-only monthly milestones
+- `Memory/Patterns/` → reusable patterns and problem→solution cases
+- `Memory/MEMORY_INBOX.md` → pre-distillation queue
+- `Channels/` → current conversation state
+- `Tickets/` → active execution state
+- `Topics/` → durable design and knowledge docs
+
+A simple rule of thumb:
+- **current truth** → `State/`
+- **historical milestones** → `Log/`
+- **reusable lessons** → `Patterns/`
+- **uncertain intake** → `MEMORY_INBOX.md`
+
+That split is the heart of MEMOS v3.
+
 ## Scaling Notes
 
 | Memory size | Suggested behavior |
