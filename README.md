@@ -16,7 +16,7 @@
 
 AI agents forget between sessions. This repo gives them durable, file-based memory without databases, embeddings, or vector search by default.
 
-It has evolved beyond a simple `MEMORY.md` note. The current model is **MEMOS v2 + Relevance Selection + Hot/Cold loading + TTL archiving**.
+It has evolved beyond a simple `MEMORY.md` note. The current model is **MEMOS v3: Relevance Selection + Hot/Cold loading + TTL archiving**.
 
 ## What this system does
 
@@ -71,7 +71,7 @@ vault/
 
 ## Core Model
 
-### 1. MEMOS v2
+### 1. MEMOS v3
 
 Instead of one growing memory file, memory is split by role:
 

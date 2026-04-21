@@ -17,7 +17,7 @@
 
 AI 에이전트는 세션이 끝나면 잊는다. 이 레포는 데이터베이스, 임베딩, 벡터 검색 없이도 세션을 넘어 유지되는 파일 기반 메모리 운영체계를 제공한다.
 
-지금의 구조는 단순한 `MEMORY.md` 하나가 아니다. 현재 운영 모델은 **MEMOS v2 + Relevance Selection + Hot/Cold 로드 + TTL Archive** 다.
+지금의 구조는 단순한 `MEMORY.md` 하나가 아니다. 현재 운영 모델은 **MEMOS v3: Relevance Selection + Hot/Cold 로드 + TTL Archive** 다.
 
 ## 이 시스템이 하는 일
 
@@ -72,7 +72,7 @@ vault/
 
 ## 핵심 운영 모델
 
-### 1. MEMOS v2
+### 1. MEMOS v3
 
 하나의 거대한 메모리 파일 대신 역할별로 분리한다.
 

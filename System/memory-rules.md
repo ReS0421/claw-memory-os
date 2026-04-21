@@ -1,8 +1,8 @@
 ---
-title: Memory Rules (MEMOS v2)
+title: Memory Rules (MEMOS v3)
 ---
 
-# Memory Rules — MEMOS v2
+# Memory Rules — MEMOS v3
 
 > Source of truth for memory distillation, routing, and bounded growth.
 > Both cron flows and session wrap-up should follow this file.
@@ -11,7 +11,7 @@ title: Memory Rules (MEMOS v2)
 
 Ask: **Will this still matter in 6 months?**
 
-## MEMOS v2 Structure
+## MEMOS v3 Structure
 
 | Layer | Role | Write pattern |
 |---|---|---|
@@ -63,7 +63,7 @@ Default path for uncertain or lower-signal items.
 3. Never copy full contents from `System/`, `Channels/`, or other source files into memory
 4. Keep Patterns and Cases bounded, merge or prune when they sprawl
 
-## MEMOS v2 Extension
+## v3 Additions
 
 ### Relevance Selection + skipIndex
 - Use AGENTS loading rules to select only relevant State files
