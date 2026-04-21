@@ -1,10 +1,13 @@
 # System/
 
-This folder is for **local overrides or quick-reference copies** of workspace System/ files.
+Local mirror or quick-reference copies of workspace system rules.
 
-The **source of truth** for all system rules lives in the workspace:
+The primary source of truth still lives in:
 `~/.openclaw/workspace/System/`
 
-You can optionally copy or symlink files here for convenience, but the workspace versions are authoritative.
+## Typical use
+- keep local copies of high-touch rules
+- keep machine-specific notes if needed
+- do not let local copies silently diverge from workspace canon
 
-See `AGENTS.md` → "Source of Truth" table for the full mapping.
+When in doubt, prefer the workspace version.

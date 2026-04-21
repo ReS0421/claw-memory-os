@@ -58,8 +58,8 @@ System/MISSION.local.md
 *.db
 
 # Runtime memory (not for sharing)
-memory/
-Memory/
+/memory/
+/Memory/
 
 # Vault data (keep vault in its own private repo)
 vaults/

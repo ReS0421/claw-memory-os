@@ -1,49 +1,45 @@
-# MEMORY.md - Long-Term Memory
-> Last distilled: YYYY-MM-DD
+# MEMORY.md — Master MOC
+> Last updated: YYYY-MM-DD
+> Session-start entry point. Keep this file pointer-first and lightweight.
 
 ---
 
-## About {user}
-- Name: _(fill in as you learn)_
-- Timezone: _(fill in)_
-
-### Preferences
-- _(communication style, work patterns — as you learn them)_
-
-## About Me
-- Name: _(your agent name)_
-- First boot: _(date)_
+## Identity
+- **User**: _(name / timezone / key preferences)_
+- **Agent**: _(name / first boot / role)_
 
 ---
 
-## System Overview
-> Details: System/infrastructure.md
+## Domain State
+> Load the relevant `Memory/State/{domain}.md` file when the request matches that domain.
 
-_(High-level system notes go here)_
-
-## Domain Status
-> Per-domain state summaries. Keep latest only — replace on each update.
-
-_(Add domain summaries as your system grows, e.g. "Notion portfolio", "Intel pipeline", etc.)_
+| Domain | One-line status | Updated | State file |
+|---|---|---|---|
+| Example domain | Current status summary | MM-DD | Memory/State/example.md |
 
 ---
 
-## Learned Patterns
-> Patterns confirmed through repeated observation. Add when 2+ occurrences or high impact.
+## Current Operating Note
+- _(optional: current model/runtime/provider note)_
 
-_(none yet)_
-
-## Learned Cases
-> Specific problem → solution pairs. Add when reoccurrence is likely.
-
-_(none yet)_
-
----
-
-## Key Decisions
-- YYYY-MM-DD: Bootstrap, first boot
+## System Pointers
+- Channels → `Channels/`
+- Tickets → `Tickets/INDEX.md`
+- Topics → `Topics/`
+- System rules → `System/` or workspace `System/`
 
 ---
 
-> Current tasks/TODOs → Tickets/INDEX.md (not here)
-> Channel state → Channels/
+## Patterns & Cases
+- Learned Patterns → `Memory/Patterns/`
+- Learned Cases → `Memory/Patterns/`
+
+---
+
+## Key Log
+- Milestones → `Memory/Log/YYYY-MM.md`
+- Intake queue → `Memory/MEMORY_INBOX.md`
+
+---
+
+> Current tasks/TODOs belong in `Tickets/`, not here.
