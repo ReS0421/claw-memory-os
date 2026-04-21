@@ -1,12 +1,10 @@
 # HEARTBEAT.md
 
-# Keep this file empty (or with only comments) to skip heartbeat API calls.
-# Add tasks below when you want the agent to check something periodically.
+## Active Tasks
 
-# Example tasks (uncomment after setting up your vault):
-#
-# ## Active Tasks
-#
-# - Memory scale check: `cat Memory/MEMORY.md Channels/*.md Topics/*.md 2>/dev/null | wc -l` — if over 5,000 lines, alert about memory growth.
-# - Stale ticket scan: `find Tickets/ -name "T-*.md" -mtime +7` — list active tickets with no update in 7+ days.
-# - If nothing needs attention, reply HEARTBEAT_OK.
+- If the vault mount is down, alert.
+- Scan stale tickets: `find ~/vaults/my-workspace/Tickets/ -name "T-*.md" -mtime +7` and report active ones.
+- Run `bash ~/.openclaw/workspace/scripts/cost-tracker.sh today` and alert if daily cost exceeds your threshold.
+- Memory scale check: `cat ~/vaults/my-workspace/Memory/MEMORY.md ~/vaults/my-workspace/Channels/*.md ~/vaults/my-workspace/Topics/*.md 2>/dev/null | wc -l` and alert if total lines exceed 5,000.
+- State freshness check: warn if any `Memory/State/*.md` has not been updated for 30+ days.
+- If nothing needs attention, reply `HEARTBEAT_OK`.

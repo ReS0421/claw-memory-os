@@ -1,84 +1,127 @@
 ---
-title: Memory Rules
+title: Memory Rules (MEMOS v2)
 ---
 
-# Memory Rules
+# Memory Rules — MEMOS v2
 
-> Distillation and INBOX management rules for MEMORY.md. Source of truth.
-> Both cron (memory-distill) and secretary wrap-up follow these rules.
+> Source of truth for memory distillation, routing, and bounded growth.
+> Both cron flows and session wrap-up should follow this file.
 
-## Intake Criteria
-"Will this still matter in 6 months?"
+## Core Principle
 
-## MEMORY.md Section Structure
+Ask: **Will this still matter in 6 months?**
 
-| Section | Content | Update Method |
-|---------|---------|---------------|
-| **About {user}** | User profile + preferences | Add/replace |
-| **About Me** | Agent profile | Replace on change |
-| **System Overview** | Infra pointers | Maintain pointers, details in System/ |
-| **Domain Status** | Per-domain state summaries | Replace (keep latest only) |
-| **Learned Patterns** | Repeatedly confirmed operational patterns | Add (merge if duplicate) |
-| **Learned Cases** | Specific problem→solution pairs | Add (merge if similar) |
-| **Key Decisions** | Chronological key decisions | Append only |
+## MEMOS v2 Structure
 
-### Learned Patterns Intake Criteria
-- **2+ occurrences** of the same pattern observed
-- Or even 1 occurrence if impact is high (30+ min wasted, data loss risk, etc.)
-- Format: one line, "situation → lesson" structure
-
-### Learned Cases Intake Criteria
-- Concrete problem + solution must exist as a pair
-- Only if reoccurrence is likely
-- Format: one line, "problem: cause → solution"
+| Layer | Role | Write pattern |
+|---|---|---|
+| `Memory/MEMORY.md` | Master MOC, pointer-first overview | replace summaries only |
+| `Memory/State/{domain}.md` | Current domain state | full replace |
+| `Memory/Log/YYYY-MM.md` | Milestones and key decisions | append only |
+| `Memory/Patterns/` | Learned patterns and cases | append or merge |
+| `Memory/MEMORY_INBOX.md` | Pre-distillation queue | clear after processing |
 
 ## Two Intake Paths
 
-### 1. Immediate Path (during secretary wrap-up)
-Certain long-term memories skip the INBOX and go directly to MEMORY.md.
+### 1. Immediate Path
+Write directly when any of these apply:
+- infrastructure change
+- key design or architecture decision
+- new tool, pipeline, or automation
+- project state transition
+- system structure change
+- confirmed Learned Pattern or Case
 
-**Criteria (if any apply):**
-- Infrastructure change (services, cron, paths)
-- Key design decision (architecture, system design)
-- New tool/pipeline introduced
-- Project state transition (started, completed, paused)
-- System structure change (memory system, vault structure)
-- Confirmed Learned Pattern or Learned Case
+When writing immediately:
+- replace old state instead of duplicating it
+- keep details in source docs, not in `MEMORY.md`
+- log the decision in `Memory/review-log.md` as `immediate`
 
-Log as `decision: immediate` in review-log.
-
-### 2. Inbox Path (default)
-Items that need judgment go to INBOX pending.
-Distillation cron processes them.
-
-## INBOX Structure
-- `pending` — processed by distillation cron (promote/discard/hold)
-- `hold` — untouched. Force-decided after 4 weeks.
+### 2. Inbox Path
+Default path for uncertain or lower-signal items.
+- add to `Memory/MEMORY_INBOX.md`
+- distillation later decides: promote / discard / hold
 
 ## Distillation Cycle
-- **Daily** (after daily-log)
-- Skip quietly if no changes
-- Light days: INBOX processing + date update is sufficient
-- Always write review-log, even for small changes
+
+- usually daily, after daily-log
+- can skip quietly if nothing changed
+- even light days should still update `Memory/review-log.md`
 
 ## Distillation Rules
-1. Check pending → promote to MEMORY.md / discard / move to hold
-2. From Daily (yesterday) + Channels (yesterday's edits): extract only decisions, config changes, state changes, key insights
-3. Don't duplicate existing content
-4. If old info has changed → replace (not add)
-5. **Extract Patterns/Cases:** detect repeated patterns or problem→solution pairs from sessions → add to relevant section
+
+1. Process `pending` INBOX items first
+2. Extract only decisions, state changes, config changes, and durable insights from Daily and Channels
+3. Do not duplicate existing content
+4. Replace stale facts instead of accumulating them
+5. Detect repeated patterns or concrete problem→solution pairs and promote them to `Patterns/`
 
 ## Prohibited
-1. **Never put active tasks/TODOs in MEMORY.md.** Current state belongs in Tickets/INDEX.md.
-2. **Never put short-term events in Key Decisions.** "Config restored", "error fixed" — Daily is enough.
-3. **Never copy other folder contents into MEMORY.** System/, Channels/ info → pointers only.
-4. **Don't over-fill Patterns/Cases.** Keep each under 10. Merge or discard oldest when exceeded.
+
+1. Never put active tasks or TODOs in `MEMORY.md`
+2. Never put short-lived operational noise in Key Log
+3. Never copy full contents from `System/`, `Channels/`, or other source files into memory
+4. Keep Patterns and Cases bounded, merge or prune when they sprawl
+
+## MEMOS v2 Extension
+
+### Relevance Selection + skipIndex
+- Use AGENTS loading rules to select only relevant State files
+- `skipIndex` is best-effort session-local tracking to avoid redundant reads
+- Revisit the approach if State files reach ~20+ or Topics reach ~50+
+
+### Storage Ban Filter
+Do not promote to durable memory:
+- one-off fixes already captured in Daily
+- transient chat details with no durable value
+- duplicate references to existing canonical docs
+
+### Staleness Checks
+Heartbeat can warn when `Memory/State/*.md` files have not been updated for 30+ days.
+
+## TTL Archive Policy
+
+### `archive_after` field
+- Topic files may declare `archive_after: YYYY-MM-DD`
+- once expired, `archive-cleanup` moves them to `Archive/deprecated-topics/`
+- missing `archive_after` can be treated as a lint warning for Topics that should be time-bounded
+
+### TTL Guidelines
+| State | Suggested TTL |
+|---|---|
+| short-lived implementation plan | 2 to 6 weeks |
+| temporary comparison or audit note | 1 to 3 months |
+| core canonical design | no TTL or very long TTL |
+
+### Automation
+- `archive-cleanup` can run monthly
+- record archive moves in an archive log if your setup uses one
+- extending TTL is allowed when a Topic is still actively referenced
+
+## Hot / Cold Loading
+
+Hot load at session start:
+- `SOUL.md`, `USER.md`
+- Channel abstracts, current channel
+- `Tickets/INDEX.md`
+- `Memory/MEMORY.md` and relevant `Memory/State/*.md`
+
+Cold load only on explicit trigger:
+- `Topics/*.md`
+- `System/*.md`
+- `Memory/Log/`, `Memory/Patterns/`
+- individual Tickets
+
+## Archive Reference Rules
+
+- archive files are valid references, but they are not current canon
+- current docs may cite archive docs as history or reference
+- do not treat archive docs as active source of truth unless explicitly reactivated
 
 ## Review Log
-All promote/discard/hold/immediate decisions logged in `Memory/review-log.md`:
-| date | item | decision | reason |
 
-- Immediate: `decision: immediate`
-- Promote: `decision: promote`
-- Discard: `decision: discard`
-- Hold: `decision: hold`
+Every promote / discard / hold / immediate decision should be logged in `Memory/review-log.md`.
+Recommended columns:
+
+| date | item | decision | reason |
+|---|---|---|---|
