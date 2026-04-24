@@ -26,25 +26,32 @@ It has evolved beyond a simple `MEMORY.md` note. The current model is **MEMOS v3
 - distills noisy session output into durable memory
 - archives aging Topic docs before the vault sprawls
 
-## Current Architecture
+Recent versions of this system also split memory into distinct layers: a master index (`MEMORY.md`), per-domain state files, append-only logs, reusable patterns/cases, and an inbox for distillation.
+
+## Architecture
 
 ### Workspace
 
 ```text
-workspace/
-├── SOUL.md
-├── USER.md
-├── AGENTS.md
-├── BOOTSTRAP.md
-├── IDENTITY.md
-├── HEARTBEAT.md
-├── TOOLS.md
-├── System/
-│   ├── memory-rules.md
-│   ├── channel-archiving-rules.md
-│   ├── infrastructure.md
-│   ├── notion-ids.md
-│   └── MISSION.md
+workspace/                          ← OpenClaw workspace (~/.openclaw/workspace/)
+├── SOUL.md                         # Agent identity and personality
+├── USER.md                         # About your human
+├── AGENTS.md                       # Session rules, memory workflows, vault path
+├── BOOTSTRAP.md                    # First-run setup guide
+├── IDENTITY.md                     # Agent identity pointer
+├── HEARTBEAT.md                    # Periodic health check tasks
+├── TOOLS.md                        # Local environment notes
+├── CONTRIBUTING.md                 # Contribution guidelines
+├── LICENSE                         # MIT License
+│
+├── System/                         # Operational rules (source of truth)
+│   ├── memory-rules.md             # Distillation rules
+│   ├── channel-archiving-rules.md  # Channel trimming policy
+│   ├── design-review-checklist.md  # System design verification
+│   ├── infrastructure.md           # Infra, paths, services
+│   ├── notion-ids.md               # External service ID reference
+│   └── MISSION.md                  # Top-level goals
+│
 ├── skills/
 ├── scripts/
 └── docs/
@@ -69,6 +76,24 @@ vault/
 └── Topics/
 ```
 
+## Key Concepts
+
+### Memory Hierarchy
+
+```text
+MEMORY.md                ← Master index / long-term navigation layer
+State/{domain}.md        ← Current state per domain (replace-in-place)
+Log/YYYY-MM.md           ← Append-only key decisions
+Patterns/                ← Reusable patterns and concrete cases
+MEMORY_INBOX.md          ← Pending distillation buffer
+
+Channels/                ← Current state per conversation thread
+Topics/                  ← Mature knowledge promoted from Channels
+Tickets/                 ← Active tasks with INDEX.md overview
+Daily/                   ← Time-axis event log (one per day)
+Sessions/                ← Archived channel history
+```
+
 ## Core Model
 
 ### 1. MEMOS v3
@@ -80,6 +105,12 @@ Instead of one growing memory file, memory is split by role:
 - `Memory/Log/YYYY-MM.md` for append-only milestones
 - `Memory/Patterns/` for reusable learned patterns and cases
 - `Memory/MEMORY_INBOX.md` for pre-distillation intake
+
+Two intake paths coexist:
+1. **Immediate path** — stable state changes, infrastructure changes, confirmed patterns/cases, or key decisions → update the appropriate long-term file directly
+2. **Inbox path** — uncertain items → `MEMORY_INBOX.md` → daily distillation decides (promote / discard / hold)
+
+A practical rule of thumb: keep `MEMORY.md` as an index, keep current domain truth in `State/`, and keep historical decisions in append-only `Log/`.
 
 ### 2. Relevance Selection
 
@@ -126,6 +157,24 @@ This keeps design residue from silently bloating active memory.
 - **Distillation over accumulation**
 - **Bounded growth**
 - **Canonical-first references**
+
+### Distillation Rules
+
+The distillation cron (see `System/memory-rules.md`) follows strict rules:
+- **Promote** only what still matters long-term
+- **Replace** current-state files instead of accumulating stale summaries
+- **Append** historical decisions to monthly logs instead of rewriting history
+- **Never** put active tasks in long-term memory files (that's Tickets' job)
+- **Promote patterns/cases** only when repetition or impact justifies it
+- Prefer pointers and structure over duplication
+
+### Session Wrap-up
+
+When a session ends:
+1. Update relevant Channel files
+2. Move confirmed learnings to MEMORY.md or MEMORY_INBOX.md
+3. Update Tickets if task states changed
+4. Refresh Channel `abstract` frontmatter
 
 ## Getting Started
 
@@ -183,30 +232,3 @@ A simple rule of thumb:
 - **uncertain intake** → `MEMORY_INBOX.md`
 
 That split is the heart of MEMOS v3.
-
-## Scaling Notes
-
-| Memory size | Suggested behavior |
-|---|---|
-| under 1k lines | read almost everything |
-| 1k to 5k | rely on channel abstracts and selective state loading |
-| 5k+ | tighten archive rules, consolidate Topics, consider semantic retrieval |
-
-## Repo Scope
-
-This repository is the **public template / operating model**.
-
-Your real vault is separate, private, and should contain your actual:
-- Channels
-- Tickets
-- Topics
-- Logs
-- durable memory
-
-## License
-
-MIT
-
----
-
-Built with [OpenClaw](https://github.com/openclaw/openclaw) 🐾
